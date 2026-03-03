@@ -7,7 +7,6 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
 
-    // On initial load, check if we already have a token in localStorage
     useEffect(() => {
         const token = localStorage.getItem('access_token');
         const role = localStorage.getItem('user_role');
@@ -25,9 +24,9 @@ export const AuthProvider = ({ children }) => {
         setUser({ token: accessData.access, role });
 
         // Route them to the correct dashboard based on their role
-        if (role === 'admin' || role === 'staff') navigate('/admin/dashboard');
-        else if (role === 'trainer') navigate('/trainer/dashboard');
-        else if (role === 'student') navigate('/student/dashboard');
+        if (role === 'ADMIN' || role === 'STAFF') navigate('/admin/dashboard');
+        else if (role === 'TRAINER') navigate('/trainer/dashboard');
+        else if (role === 'STUDENT') navigate('/student/dashboard');
     };
 
     const logout = () => {

@@ -22,6 +22,16 @@ const Login = () => {
                 password: data.password,
             });
 
+            console.log("🔥 BACKEND RESPONSE:", response.data);
+
+            const userRole = response.data.role ? response.data.role.toLowerCase() : '';
+
+            if (!userRole) {
+                setErrorMsg("Login successful, but no role was returned from the server.");
+                setIsLoading(false);
+                return;
+            }
+
             // Pass the response data to our context
             login(response.data, response.data.role);
 

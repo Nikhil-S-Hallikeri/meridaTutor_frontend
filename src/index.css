@@ -2,6 +2,13 @@
 
 @theme {
     --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    
+    --color-primary: #5A6ACF;
+    --color-background: #F4F7FE;
+    --color-card: #FFFFFF;
+    --color-success: #05CD99;
+    --color-warning: #FFCE20;
+    --color-danger: #E65F2B;
 }
 
 :root {
