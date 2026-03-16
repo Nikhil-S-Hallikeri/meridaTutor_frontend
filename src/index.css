@@ -2,7 +2,7 @@
 
 @theme {
     --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    
+
     --color-primary: #5A6ACF;
     --color-background: #F4F7FE;
     --color-card: #FFFFFF;
@@ -17,4 +17,22 @@
 
 body {
     font-family: 'Poppins', sans-serif;
+}
+
+/* Custom Scrollbar Styling */
+.scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+}
+
+.scrollbar-track-transparent::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scrollbar-thumb-white\/20::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+}
+
+.hover\:scrollbar-thumb-white\/40:hover::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.4);
 }

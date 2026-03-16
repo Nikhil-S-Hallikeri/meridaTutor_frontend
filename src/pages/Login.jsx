@@ -1,12 +1,15 @@
 import { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
+import api from '../services/api';
+import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
     const { login } = useContext(AuthContext);
     const [errorMsg, setErrorMsg] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     // Initialize React Hook Form
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -15,9 +18,15 @@ const Login = () => {
     const onSubmit = async (data) => {
         setIsLoading(true);
         setErrorMsg('');
+        
+        // CRITICAL: Clear existing tokens before attempting a new login
+        // to prevent 401 errors from expired old tokens
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        
         try {
-            // Calling the exact endpoint from your API Sheet
-            const response = await axios.post('http://127.0.0.1:8000/api/login/', {
+            // Using the centralized api service
+            const response = await api.post('/api/login/', {
                 email: data.email,
                 password: data.password,
             });
@@ -48,7 +57,7 @@ const Login = () => {
             <div className="w-full max-w-md bg-card rounded-2xl shadow-xl p-8">
 
                 <div className="text-center mb-8">
-                    <h1 className="text-3xl font-bold text-primary mb-2">Merida Tuition</h1>
+                    <h1 className="text-3xl font-medium text-primary mb-2">Merida Tuition</h1>
                     <p className="text-gray-500">Welcome back! Please login to your account.</p>
                 </div>
 
@@ -75,14 +84,27 @@ const Login = () => {
                     <div>
                         <div className="flex justify-between items-center mb-1">
                             <label className="block text-sm font-medium text-gray-700">Password</label>
-                            <a href="/forgot-password" className="text-sm text-primary hover:underline">Forgot Password?</a>
+                            <Link to="/forgot-password" xml:id="forgot-password-link" className="text-sm text-primary hover:underline">Forgot Password?</Link>
                         </div>
-                        <input
-                            type="password"
-                            {...register('password', { required: 'Password is required' })}
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-                            placeholder="••••••••"
-                        />
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                {...register('password', { required: 'Password is required' })}
+                                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all pr-12"
+                                placeholder="••••••••"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none transition-colors"
+                            >
+                                {showPassword ? (
+                                    <EyeOff className="w-5 h-5 pointer-events-none" />
+                                ) : (
+                                    <Eye className="w-5 h-5 pointer-events-none" />
+                                )}
+                            </button>
+                        </div>
                         {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
                     </div>
 
